@@ -1,10 +1,10 @@
-from django.contrib.auth.models import User
 from django.http import Http404
 from .models import Student
 from restapp.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import render
 
 
 class UserList(APIView):
@@ -14,7 +14,8 @@ class UserList(APIView):
     def get(self, request, format=None):
         users = Student.objects.all()
         serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+        #return Response(serializer.data)
+        return render(request, 'restapp/userlist.html', {'users': serializer.data})
 
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
@@ -31,13 +32,15 @@ class UserDetail(APIView):
     """
     Retrieve particular user, update or delete a user instance.
     """
-    def get_objectusr(self, urlpat):
+    @staticmethod
+    def get_objectusr(urlpat):
         try:
             return Student.objects.get(username=urlpat)
         except Student.DoesNotExist:
             raise Http404
 
-    def get_objectid(self, urlpat):
+    @staticmethod
+    def get_objectid(urlpat):
         try:
             return Student.objects.get(pk=urlpat)
         except Student.DoesNotExist:

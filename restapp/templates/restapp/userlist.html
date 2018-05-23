@@ -1,0 +1,11 @@
+{% extends 'restapp/base.html' %}
+
+{% block content %}
+    {% for user in users %}
+        <div class="user">
+            <h1>Student ID :<a href="">{{ user.student_id }}</a></h1>
+            <p>Username :{{ user.username|linebreaksbr }}</p>
+            <p>First Name:{{ user.first_name|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
